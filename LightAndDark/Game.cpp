@@ -19,7 +19,7 @@ void Game::update()
 {
 	if (Input::MouseL.clicked)
 	{
-		changeScene(SceneName::Title);
+		changeScene(BaseSceneName::Title);
 	}
 }
 
