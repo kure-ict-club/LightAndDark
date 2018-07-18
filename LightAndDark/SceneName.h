@@ -7,4 +7,4 @@ enum class BaseSceneName
 	Debug,
 };
 
-using MyBaseApp = SceneManager<SceneName>;
+using MyBaseApp = SceneManager<BaseSceneName>;
