@@ -1,4 +1,8 @@
-﻿# include <Siv3D.hpp>
+﻿/// <summary>
+/// develop ver. 0.0.1
+/// </summary>
+
+# include <Siv3D.hpp>
 # include "CallGroup.h"
 # include "DebugScene.h"
 # include "Title.h"
