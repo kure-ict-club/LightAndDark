@@ -8,17 +8,9 @@
 # include "Title.h"
 # include "Game.h"
 
-
-
-
-
-
-
-
-
 void Main()
 {
-	Window::SetTitle(L"ひかりとやみ");
+	Window::SetTitle(L"ひかりとやみ-pointN");
 	Window::SetStyle(WindowStyle::Sizeable);
 
 	SceneManager<BaseSceneName> sceneManager;
