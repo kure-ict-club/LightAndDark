@@ -8,6 +8,14 @@
 # include "Title.h"
 # include "Game.h"
 
+
+
+
+
+
+
+
+
 void Main()
 {
 	Window::SetTitle(L"ひかりとやみ");
