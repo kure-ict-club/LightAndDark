@@ -9,5 +9,9 @@ public:
 	void init() override;
 	void update() override;
 	void draw() const override;
+
+private:
+	Image image;
+
 };
 

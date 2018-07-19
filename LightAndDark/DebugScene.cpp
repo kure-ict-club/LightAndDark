@@ -3,6 +3,7 @@
 
 
 DebugScene::DebugScene()
+	: image()
 {
 }
 
@@ -21,6 +22,8 @@ void DebugScene::update()
 	{
 		changeScene(BaseSceneName::Title);
 	}
+
+
 }
 
 void DebugScene::draw() const

@@ -18,6 +18,7 @@ void Main()
 	sceneManager.add<Title>(BaseSceneName::Title);
 	sceneManager.add<Game>(BaseSceneName::Game);
 
+
 	while (System::Update())
 	{
 		sceneManager.updateAndDraw();
