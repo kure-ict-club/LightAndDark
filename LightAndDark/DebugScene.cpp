@@ -1,6 +1,6 @@
-#include "stdafx.h"
-#include "DebugScene.h"
-
+# include "stdafx.h"
+# include "DebugScene.h"
+# include "Pikachu.h"
 
 DebugScene::DebugScene()
 	: image()
@@ -23,6 +23,11 @@ void DebugScene::update()
 		changeScene(BaseSceneName::Title);
 	}
 
+	if (Input::KeyP.clicked)
+	{
+		Vec2 vec(0, 0);
+		Create<Pikachu>(std::move(vec));
+	}
 
 }
 
