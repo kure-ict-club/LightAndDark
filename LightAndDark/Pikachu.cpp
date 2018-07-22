@@ -2,6 +2,7 @@
 # include "CallGroup.h"
 # include "Pikachu.h"
 # include "Beam.h"
+# include "Enemy.h"
 
 Pikachu::Pikachu(const Vec2 & pos)
 	: Task()

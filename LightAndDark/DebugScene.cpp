@@ -1,6 +1,7 @@
 # include "stdafx.h"
 # include "DebugScene.h"
 # include "Pikachu.h"
+# include "Enemy.h"
 
 DebugScene::DebugScene()
 	: image()
@@ -27,6 +28,11 @@ void DebugScene::update()
 	{
 		Vec2 vec(0, 0);
 		Create<Pikachu>(std::move(vec));
+	}
+	if (Input::KeyE.clicked)
+	{
+		Vec2 vec(Random(Window::Width()), Random(Window::Height()));
+		Create<Enemy>(std::move(vec));
 	}
 
 }

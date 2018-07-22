@@ -165,6 +165,7 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Beam.cpp" />
     <ClCompile Include="DebugScene.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pikachu.cpp" />
@@ -295,6 +296,7 @@
     <ClInclude Include="CallGroup.h" />
     <ClInclude Include="CallPriority.h" />
     <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Pikachu.h" />
     <ClInclude Include="SceneName.h" />
