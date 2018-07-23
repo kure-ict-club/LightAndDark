@@ -102,7 +102,6 @@ public:
 	}
 };
 
-
 class Spark : public Task
 {
 private:
@@ -168,7 +167,7 @@ private:
 			m_Draw.SetCall(&Note::DrawDeflate);
 		}
 		
-		if (Input::MouseL.clicked && (m_Pos.distanceFrom(Mouse::Pos())) <= 30.0) 
+		if (Input::MouseL.clicked && m_Pos.distanceFrom(Mouse::Pos()) <= 30.0) 
 		{
 			if (m_Radius - m_RingSize >= -2.0)
 			{
