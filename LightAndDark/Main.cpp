@@ -1,5 +1,12 @@
-﻿# include <Siv3D.hpp>
-# include "CallGroup.h"
+/// <summary>
+/// test/TaskSystem
+/// </summary>
+
+# include <Siv3D.hpp>
+# include "CallGroup.h"		
+# include "DebugScene.h"
+# include "Title.h"
+# include "Game.h"
 
 enum CallPriority
 {
@@ -9,6 +16,7 @@ enum CallPriority
 
 class GunShot : public Task
 {
+
 private:
 	Vec2		m_Pos;
 	Vec2		m_Size;
@@ -216,6 +224,9 @@ void Main()
 	int32 frameCount = 0;
 	Create<Enemy>();
 	
+  Window::SetTitle(L"ひかりとやみ - luling184");
+	Window::SetStyle(WindowStyle::Sizeable);
+  
 	while (System::Update())
 	{
 		//ノーツを生成
