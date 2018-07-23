@@ -3,7 +3,6 @@
 /// </summary>
 
 # include <Siv3D.hpp>
-# include "CallGroup.h"
 # include "DebugScene.h"
 # include "Title.h"
 # include "Game.h"
