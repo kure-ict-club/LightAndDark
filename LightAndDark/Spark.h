@@ -1,5 +1,5 @@
 # pragma once
-# include "Enemy.h"
+# include "Marill.h"
 
 class Spark
 	: public Task
@@ -9,7 +9,7 @@ public:
 	Spark(const Vec2& pos, const Color& color);
 	~Spark();
 
-	void hitCheck(Enemy& enemy);
+	void hitCheck(Marill& enemy);
 
 private:
 	void update();

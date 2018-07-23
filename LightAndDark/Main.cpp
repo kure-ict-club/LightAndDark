@@ -1,4 +1,7 @@
 ﻿# include <Siv3D.hpp>
+# include "DebugScene.h"
+# include "Title.h"
+# include "Game.h"
 # include "CallGroup.h"
 
 enum CallPriority
@@ -52,8 +55,8 @@ public:
 	Enemy() : Task()
 		, m_Pos(600, 400), m_Speed(1)
 		, m_Radius(30), m_HP(Random(2, 3))
-		, m_Update(this, &Enemy::Update, CallGroup_Update)
-		, m_Draw(this, &Enemy::Draw, CallGroup_Draw, CallPriority_Enemy)
+		, m_Update(this, &Enemy::Update, CallGroup::Update)
+		, m_Draw(this, &Enemy::Draw, CallGroup::Draw, CallPriority_Enemy)
 	{ }
 private:
 	void Update()
@@ -98,36 +101,39 @@ public:
 	}
 };
 
-class Spark : public Task
+namespace n14
 {
-private:
-	Vec2 m_Pos;
-	int32 m_Alpha;
-	double m_Radius;
-	TaskCall m_Update;
-	TaskCall m_Draw;
-public:
-	Spark(const Vec2& pos, const double& radius) : Task()
-		, m_Pos(pos + RandomVec2(Circle(radius)))
-		, m_Alpha(100), m_Radius(3.0)
-		, m_Update(this, &Spark::Update, CallGroup_Update)
-		, m_Draw(this, &Spark::Draw, CallGroup_Draw)
-	{ }
-private:
-	void Update()
+	class Spark : public Task
 	{
-		m_Alpha -= 5;
-		if (m_Alpha <= 0)
+	private:
+		Vec2 m_Pos;
+		int32 m_Alpha;
+		double m_Radius;
+		TaskCall m_Update;
+		TaskCall m_Draw;
+	public:
+		Spark(const Vec2& pos, const double& radius) : Task()
+			, m_Pos(pos + RandomVec2(Circle(radius)))
+			, m_Alpha(100), m_Radius(3.0)
+			, m_Update(this, &Spark::Update, CallGroup::Update)
+			, m_Draw(this, &Spark::Draw, CallGroup::Draw)
+		{ }
+	private:
+		void Update()
 		{
-			m_Draw.SetActive(false);
-			this->Destroy();
+			m_Alpha -= 5;
+			if (m_Alpha <= 0)
+			{
+				m_Draw.SetActive(false);
+				this->Destroy();
+			}
 		}
-	}
-	void Draw()
-	{
-		Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
-	}
-};
+		void Draw()
+		{
+			Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
+		}
+	};
+}
 
 class Note : public Task
 {
@@ -147,8 +153,8 @@ public:
 		, m_Radius(0.0), m_Alpha(100)
 		, m_RingSize(30.0)
 		, m_IsLive(true)
-		, m_Update(this, &Note::Swell, CallGroup_Update)
-		, m_Draw(this, &Note::DrawSwell, CallGroup_Draw)
+		, m_Update(this, &Note::Swell, CallGroup::Update)
+		, m_Draw(this, &Note::DrawSwell, CallGroup::Draw)
 	{ }
 
 private:
@@ -192,7 +198,7 @@ private:
 
 	void Rupture()
 	{
-		Creates<Spark>(100, m_Pos, m_Radius);
+		Creates<n14::Spark>(100, m_Pos, m_Radius);
 		Create<GunShot>();
 		this->Destroy();
 	}
@@ -214,11 +220,23 @@ private:
 
 void Main()
 {
+	Window::SetTitle(L"ひかりとやみ");
+	Window::SetStyle(WindowStyle::Sizeable);
+
+	SceneManager<BaseSceneName> sceneManager;
+	sceneManager.add<DebugScene>(BaseSceneName::Debug);
+	sceneManager.add<Title>(BaseSceneName::Title);
+	sceneManager.add<Game>(BaseSceneName::Game);
+
+
+
 	int32 frameCount = 0;
 	Create<Enemy>();
 	
 	while (System::Update())
 	{
+		sceneManager.updateAndDraw();
+
 		//ノーツを生成
 		if (++frameCount % 30 == 0) Create<Note>();
 

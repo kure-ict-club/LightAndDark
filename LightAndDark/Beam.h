@@ -1,6 +1,6 @@
 # pragma once
 
-# include "Enemy.h"
+# include "Marill.h"
 
 class Beam
 	: public Task
@@ -10,7 +10,7 @@ public:
 	Beam(const Vec2& pos);
 	~Beam();
 
-	void hitCheck(Enemy& enemy);
+	void hitCheck(Marill& enemy);
 
 private:
 	void update();

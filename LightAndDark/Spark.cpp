@@ -20,7 +20,7 @@ Spark::~Spark()
 {
 }
 
-void Spark::hitCheck(Enemy & enemy)
+void Spark::hitCheck(Marill & enemy)
 {
 	if (Circle(m_pos, 2.0).intersects(enemy.getPolygon()))
 	{
@@ -37,7 +37,7 @@ void Spark::update()
 
 	m_pos += m_vec * m_speed;	
 
-	TaskLink::All::Call<Enemy>(this, &Spark::hitCheck);
+	TaskLink::All::Call<Marill>(this, &Spark::hitCheck);
 }
 
 void Spark::draw()

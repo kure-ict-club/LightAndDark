@@ -22,7 +22,7 @@ Beam::~Beam()
 	Creates<Spark>(100, m_line.end, RandomColor());
 }
 
-void Beam::hitCheck(Enemy & enemy)
+void Beam::hitCheck(Marill & enemy)
 {
 	if (m_line.intersects(enemy.getPolygon()))
 	{
@@ -33,7 +33,7 @@ void Beam::hitCheck(Enemy & enemy)
 void Beam::update()
 {
 	m_line.end = m_pos + Vec2::Right * 6 * time.ms() / 15;
-	TaskLink::All::Call<Enemy>(this, &Beam::hitCheck);
+	TaskLink::All::Call<Marill>(this, &Beam::hitCheck);
 }
 
 void Beam::draw()
