@@ -3,14 +3,14 @@
 /// </summary>
 
 # include <Siv3D.hpp>
-# include "CallGroup.h"
+# include "CallGroup.h"		
 # include "DebugScene.h"
 # include "Title.h"
 # include "Game.h"
 
 void Main()
 {
-	Window::SetTitle(L"ひかりとやみ");
+	Window::SetTitle(L"ひかりとやみ - luling184");
 	Window::SetStyle(WindowStyle::Sizeable);
 
 	SceneManager<BaseSceneName> sceneManager;
