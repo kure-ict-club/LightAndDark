@@ -23,7 +23,7 @@ void DebugScene::update()
 	{
 		changeScene(BaseSceneName::Title);
 	}
-
+  
 	if (Input::KeyP.clicked)
 	{
 		Vec2 vec(0, 0);
@@ -34,7 +34,6 @@ void DebugScene::update()
 		Vec2 vec(Random(Window::Width()), Random(Window::Height()));
 		Create<Enemy>(std::move(vec));
 	}
-
 }
 
 void DebugScene::draw() const
