@@ -1,12 +1,5 @@
-/// <summary>
-/// test/TaskSystem
-/// </summary>
-
-# include <Siv3D.hpp>
-# include "CallGroup.h"		
-# include "DebugScene.h"
-# include "Title.h"
-# include "Game.h"
+﻿# include <Siv3D.hpp>
+# include "CallGroup.h"
 
 enum CallPriority
 {
@@ -16,7 +9,6 @@ enum CallPriority
 
 class GunShot : public Task
 {
-
 private:
 	Vec2		m_Pos;
 	Vec2		m_Size;
@@ -31,6 +23,7 @@ public:
 		, m_Draw(this, &GunShot::Draw, CallGroup::Draw, CallPriority_GunShot)
 		, m_Send(this)
 	{ }
+
 	Rect getRect() const
 	{
 		return Rect(m_Pos.x, m_Pos.y, m_Size.x, m_Size.y);
@@ -59,8 +52,8 @@ public:
 	Enemy() : Task()
 		, m_Pos(600, 400), m_Speed(1)
 		, m_Radius(30), m_HP(Random(2, 3))
-		, m_Update(this, &Enemy::Update, CallGroup::Update)
-		, m_Draw(this, &Enemy::Draw, CallGroup::Draw, CallPriority_Enemy)
+		, m_Update(this, &Enemy::Update, CallGroup_Update)
+		, m_Draw(this, &Enemy::Draw, CallGroup_Draw, CallPriority_Enemy)
 	{ }
 private:
 	void Update()
@@ -117,8 +110,8 @@ public:
 	Spark(const Vec2& pos, const double& radius) : Task()
 		, m_Pos(pos + RandomVec2(Circle(radius)))
 		, m_Alpha(100), m_Radius(3.0)
-		, m_Update(this, &Spark::Update, CallGroup::Update)
-		, m_Draw(this, &Spark::Draw, CallGroup::Draw)
+		, m_Update(this, &Spark::Update, CallGroup_Update)
+		, m_Draw(this, &Spark::Draw, CallGroup_Draw)
 	{ }
 private:
 	void Update()
@@ -154,8 +147,8 @@ public:
 		, m_Radius(0.0), m_Alpha(100)
 		, m_RingSize(30.0)
 		, m_IsLive(true)
-		, m_Update(this, &Note::Swell, CallGroup::Update)
-		, m_Draw(this, &Note::DrawSwell, CallGroup::Draw)
+		, m_Update(this, &Note::Swell, CallGroup_Update)
+		, m_Draw(this, &Note::DrawSwell, CallGroup_Draw)
 	{ }
 
 private:
@@ -224,9 +217,6 @@ void Main()
 	int32 frameCount = 0;
 	Create<Enemy>();
 	
-  Window::SetTitle(L"ひかりとやみ - luling184");
-	Window::SetStyle(WindowStyle::Sizeable);
-  
 	while (System::Update())
 	{
 		//ノーツを生成

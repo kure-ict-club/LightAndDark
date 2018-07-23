@@ -1,35 +1,35 @@
 # include "stdafx.h"
 # include "CallGroup.h"
-# include "Enemy.h"
+# include "Marill.h"
 
-Enemy::Enemy(const Vec2 & pos)
+Marill::Marill(const Vec2 & pos)
 	: Task()
 	, m_pos(pos)
 	, m_image(L"Asset/ƒ}ƒŠƒ‹.png")
 	, m_texture(m_image)
 	, m_core(Imaging::FindExternalContour(m_image, true))
-	, m_update(this, &Enemy::update, CallGroup::Update)
-	, m_draw(this, &Enemy::draw, CallGroup::Draw)
+	, m_update(this, &Marill::update, CallGroup::Update)
+	, m_draw(this, &Marill::draw, CallGroup::Draw)
 	, m_send(this)
 {
 	m_core.moveBy(m_pos);
 }
 
-Enemy::~Enemy()
+Marill::~Marill()
 {
 }
 
-s3d::Polygon Enemy::getPolygon() const
+s3d::Polygon Marill::getPolygon() const
 {
 	return m_core;
 }
 
-void Enemy::update()
+void Marill::update()
 {
 
 }
 
-void Enemy::draw()
+void Marill::draw()
 {
 	m_texture.draw(m_pos);
 }

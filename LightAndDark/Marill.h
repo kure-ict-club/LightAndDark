@@ -1,13 +1,14 @@
 #pragma once
-class Enemy
+
+class Marill
 	: public Task
 {
 public:
-	Enemy() = default;
+	Marill() = default;
 
-	Enemy(const Vec2& pos);
+	Marill(const Vec2& pos);
 
-	~Enemy();
+	~Marill();
 
 	s3d::Polygon getPolygon() const;
 
