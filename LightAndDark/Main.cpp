@@ -8,8 +8,8 @@ enum CallGroup
 
 enum CallPriority
 {
-	CallPriority_GunShot,		//最初に描画が行われる
-	CallPriority_Enemy,	//その後に描画が行われるので、プレイヤーが隠れない
+	CallPriority_GunShot,	
+	CallPriority_Enemy,	
 };
 
 class GunShot : public Task
@@ -71,17 +71,18 @@ private:
 			m_Speed = -1;
 		}
 		m_Pos.y += m_Speed;
+		TaskLink::All::Call<GunShot>(this, &Enemy::HitCheck);
 		if (m_HP <= 0)
 		{
 			m_Update.SetCall(&Enemy::Death);
 		}
-		TaskLink::All::Call<GunShot>(this, &Enemy::HitCheck);
 	}
 	void Death()
 	{
 		--m_Radius;
 		if (m_Radius <= 0)
 		{
+			m_Draw.SetActive(false);
 			Create<Enemy>();
 			this->Destroy();
 		}
@@ -109,11 +110,13 @@ private:
 	int32 m_Alpha;
 	double m_Radius;
 	TaskCall m_Update;
+	TaskCall m_Draw;
 public:
 	Spark(const Vec2& pos, const double& radius) : Task()
 		, m_Pos(pos + RandomVec2(Circle(radius)))
 		, m_Alpha(100), m_Radius(3.0)
-		, m_Update(this, &Spark::Update)
+		, m_Update(this, &Spark::Update, CallGroup_Update)
+		, m_Draw(this, &Spark::Draw, CallGroup_Draw)
 	{ }
 private:
 	void Update()
@@ -121,12 +124,13 @@ private:
 		m_Alpha -= 5;
 		if (m_Alpha <= 0)
 		{
+			m_Draw.SetActive(false);
 			this->Destroy();
 		}
-		else
-		{
-			Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
-		}
+	}
+	void Draw()
+	{
+		Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
 	}
 };
 
@@ -137,15 +141,19 @@ private:
 	double		m_Radius;	//描画半径
 	int32		m_Alpha;	//不透明度
 	double		m_RingSize;
+	bool		m_IsLive;
 
 	TaskCall	m_Update;	//更新設定
+	TaskCall	m_Draw;
 
 public:
 	Note() : Task()
 		, m_Pos(RandomVec2({ 30, 610 }, { 30, 210 }))
 		, m_Radius(0.0), m_Alpha(100)
 		, m_RingSize(30.0)
-		, m_Update(this, &Note::Swell)
+		, m_IsLive(true)
+		, m_Update(this, &Note::Swell, CallGroup_Update)
+		, m_Draw(this, &Note::DrawSwell, CallGroup_Draw)
 	{ }
 
 private:
@@ -154,23 +162,25 @@ private:
 		//半径を拡大
 		m_Radius += 0.5;
 		//半径が32以上で更新関数切り替え
-		if (m_RingSize + 2.0 <= m_Radius) m_Update.SetCall(&Note::Deflate);
+		if (m_RingSize + 2.0 <= m_Radius)
+		{
+			m_Update.SetCall(&Note::Deflate);
+			m_Draw.SetCall(&Note::DrawDeflate);
+		}
 		
 		if (Input::MouseL.clicked && (m_Pos.distanceFrom(Mouse::Pos())) <= 30.0) 
 		{
 			if (m_Radius - m_RingSize >= -2.0)
 			{
 				m_Update.SetCall(&Note::Rupture);
+				m_Draw.SetActive(false);
 			}
 			else
 			{
 				m_Update.SetCall(&Note::Deflate);
+				m_Draw.SetCall(&Note::DrawDeflate);
 			}
 		}
-
-		//描画
-		Circle(m_Pos, m_RingSize).drawFrame(2.0, 0.0);
-		Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
 	}
 
 	void Deflate()
@@ -178,13 +188,10 @@ private:
 		//不透明度を下げる
 		m_Alpha -= 5;
 		//完全透明で消去
-		if (m_Alpha <= 0) this->Destroy();
-
-		//描画
-		else 
+		if (m_Alpha <= 0)
 		{
-			Circle(m_Pos, m_RingSize).drawFrame(2.0, 0.0, Alpha(m_Alpha));
-			Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
+			m_Draw.SetActive(false);
+			this->Destroy();
 		}
 	}
 
@@ -194,10 +201,19 @@ private:
 		Create<GunShot>();
 		this->Destroy();
 	}
+
+	void DrawSwell()
+	{
+		//描画
+		Circle(m_Pos, m_RingSize).drawFrame(2.0, 0.0);
+		Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
+	}
+	void DrawDeflate()
+	{
+		Circle(m_Pos, m_RingSize).drawFrame(2.0, 0.0, Alpha(m_Alpha));
+		Circle(m_Pos, m_Radius).draw(Alpha(m_Alpha));
+	}
 };
-
-
-
 
 //-------------------------------------------- 区切り --------------------------------------------//
 
@@ -211,7 +227,6 @@ void Main()
 		//ノーツを生成
 		if (++frameCount % 30 == 0) Create<Note>();
 
-		TaskCall::All::Update();
 		TaskCall::All::Update(CallGroup_Update);
 		TaskCall::All::Update(CallGroup_Draw);
 		Task::All::Update();
