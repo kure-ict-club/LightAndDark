@@ -15,5 +15,9 @@ namespace Hina
 		TaskCall m_update;
 		TaskCall m_draw;
 		TaskLink m_send;
+
+		Vec2 m_pos;
+		double m_length;
+		double m_speed;
 	};
 }
